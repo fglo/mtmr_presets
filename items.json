@@ -308,7 +308,6 @@
     {
         "type": "appleScriptTitledButton",
         "width": 250,
-        "align": "right",
         "source": {
             "filePath":"~/Library/Application Support/MTMR/music_spotify_brave_yt.scpt"
         },
