@@ -1,6 +1,6 @@
 set windowTitle to ""
 set ytTab to ""
-set ytTabOpen to false
+set ytTabIsOpen to false
 set ytTitle to ""
 set ytStatus to ""
 
@@ -53,8 +53,8 @@ on handleYtAction()
 	tell application "Brave Browser"
 		set lastWindowIndex to active tab index of front window
 		set ytTab to (front window's first tab whose URL contains "youtube.com/watch?v=")
-		set ytTabOpen to (contents of ytTab is not "")
-		if ytTabOpen then
+		set ytTabIsOpen to (contents of ytTab is not "")
+		if ytTabIsOpen then
 			repeat with thisWindow in windows
 				set cnt to 1
 				repeat with thisTab in (tabs of thisWindow)
@@ -86,6 +86,11 @@ try
 		end tell
 	end if
 end try
+
+if (application "Spotify" is not running) and (application "Brave Browser" is not running or not ytTabIsOpen) then
+	tell application "Spotify" to activate
+	return
+end if
 
 set spotifyIsPlaying to isSpotifyPlaying()
 if spotifyIsPlaying then

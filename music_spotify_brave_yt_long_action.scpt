@@ -1,6 +1,6 @@
 set windowTitle to ""
 set ytTab to ""
-set ytTabOpen to false
+set ytTabIsOpen to false
 set ytTitle to ""
 set ytStatus to ""
 
@@ -74,6 +74,11 @@ try
 		end tell
 	end if
 end try
+
+if (application "Spotify" is not running) and (application "Brave Browser" is not running or not ytTabIsOpen) then
+	tell application "Spotify" to activate
+	return
+end if
 
 if application "Spotify" is running then
     set spotifyIsPlaying to isSpotifyPlaying()

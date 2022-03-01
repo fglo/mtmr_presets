@@ -39,7 +39,12 @@ end isYtPlaying
 on getSpotifyLabel()
 	try
 		tell application "Spotify"
-			return (get artist of current track) & " ‚Äì " & (get name of current track)
+			set spotifyTitle to ((get name of current track) & " - " & (get artist of current track))
+            if length of spotifyTitle > 25 then
+                return (text 1 thru 25 of spotifyTitle) & "..."
+            else
+                return spotifyTitle
+            end if
 		end tell
 	end try
 	return ""
@@ -49,10 +54,10 @@ on getYtLabel()
 	set ytStatusAndTitle to getYtStatusAndTitle()
 	set ytTitle to ytStatusAndTitle's second item
 	try
-		if length of ytTitle > 50 then
-			return (text 1 thru 50 of ytTitle) & "..."
+		if length of ytTitle > 25 then
+			return (text 1 thru 25 of ytTitle) & "..."
 		else
-			return text 1 thru -11 of ytTitle
+			return ytTitle
 		end if
 	end try
 	return ""
@@ -71,25 +76,29 @@ try
 	end if
 end try
 
+if (application "Spotify" is not running) and (application "Brave Browser" is not running or not ytTabIsOpen) then
+    return {" ", "spotify"}
+end if
+
 set spotifyIsPlaying to isSpotifyPlaying()
 if spotifyIsPlaying then
-	return {" ‚ñ∑ | " & getSpotifyLabel(), "spotify"}
+	return {"▷ | " & getSpotifyLabel(), "spotify"}
 end if
 
 set ytIsPlaying to isYtPlaying()
 if ytIsPlaying then
-	return {" ‚ñ∑ | " & getYtLabel(), "youtube"}
+	return {"▷ | " & getYtLabel(), "youtube"}
 end if
 
 if application "Spotify" is running then
 	set spotifyLabel to getSpotifyLabel()
 	if spotifyLabel's contents is not "" and windowTitle is not "Brave Browser" or not ytTabIsOpen then
-		return {" II ‚éÆ " & spotifyLabel, "spotify"}
+		return {"II ⎮ " & spotifyLabel, "spotify"}
 	end if
 end if
 
 if ytTabIsOpen then
-	return {" II ‚éÆ " & getYtLabel(), "youtube"}
+	return {"II ⎮ " & getYtLabel(), "youtube"}
 end if
 
 return {" ", "spotify"}
